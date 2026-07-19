@@ -95,6 +95,28 @@ A few things to expect:
 - **"Don't Allow" is safe.** The setting stays as it was and the icon keeps showing the true state.
 - **It says "bash", not the plugin name.** SwiftBar runs the script through `bash`, so that's the process macOS names.
 
+### Skipping the prompt (optional)
+
+There's no way to make macOS "approve the script once" — the dialog isn't a trust decision it remembers, and unsigned shell scripts can't be notarized. But you can grant permission for the *specific commands* ahead of time, with a sudoers rule:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/programmerdatch/claude-code-background/main/enable-passwordless.sh | bash
+```
+
+It asks for your password once (to write the rule), then toggling is silent from then on. Undo whenever you like:
+
+```bash
+./enable-passwordless.sh --remove
+```
+
+The rule is scoped as tightly as sudo allows — sudo matches arguments exactly, so it permits these two exact invocations and nothing else:
+
+```
+you ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 0, /usr/bin/pmset -a disablesleep 1
+```
+
+**The trade-off, stated plainly:** anything running as your user can now flip that one power setting without asking you. It cannot run `pmset` with other arguments, cannot get a root shell, and cannot touch anything else. That's a small but real widening of what code on your Mac can do unprompted — if you'd rather keep the confirmation step, just don't install it. The plugin works either way and falls back to the password dialog automatically when the rule isn't present.
+
 ---
 
 ## Cautions
