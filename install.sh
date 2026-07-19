@@ -9,8 +9,11 @@
 
 set -e
 
-PLUGIN_URL="https://raw.githubusercontent.com/programmerdatch/claude-code-background/main/ccbg.10s.sh"
+REPO_BRANCH="${CCBG_BRANCH:-main}"
+RAW_BASE="https://raw.githubusercontent.com/programmerdatch/claude-code-background/$REPO_BRANCH"
+PLUGIN_NAME="ccbg.10s.sh"
 PLUGIN_DIR="${SWIFTBAR_PLUGIN_DIR:-$HOME/.swiftbar}"
+PLUGIN_PATH="$PLUGIN_DIR/$PLUGIN_NAME"
 
 echo "Claude Code Background — installer"
 echo
@@ -31,9 +34,9 @@ fi
 
 # 2. Install the plugin
 mkdir -p "$PLUGIN_DIR"
-echo "→ Downloading plugin to $PLUGIN_DIR/ccbg.10s.sh"
-curl -fsSL "$PLUGIN_URL" -o "$PLUGIN_DIR/ccbg.10s.sh"
-chmod +x "$PLUGIN_DIR/ccbg.10s.sh"
+echo "→ Downloading plugin to $PLUGIN_PATH"
+curl -fsSL "$RAW_BASE/$PLUGIN_NAME" -o "$PLUGIN_PATH"
+chmod +x "$PLUGIN_PATH"
 
 echo
 echo "✅ Installed."

@@ -44,7 +44,7 @@ HOMEBREW_NO_AUTO_UPDATE=1 brew install --cask swiftbar
 **One-liner:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/programmerdatch/claude-code-background/develop/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/programmerdatch/claude-code-background/main/install.sh | bash
 ```
 
 **Or manually:**
