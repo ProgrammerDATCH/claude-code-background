@@ -16,9 +16,11 @@ Click the icon to flip between the two. The icon always shows the *live* state, 
 Under the hood it toggles a single macOS power setting:
 
 ```bash
-sudo pmset -a disablesleep 1   # ON  — no sleep on lid close
-sudo pmset -a disablesleep 0   # OFF — normal sleep
+pmset -a disablesleep 1   # ON  — no sleep on lid close
+pmset -a disablesleep 0   # OFF — normal sleep
 ```
+
+Those need admin rights, so the plugin runs them via `osascript ... with administrator privileges` — which is what triggers the macOS password dialog described [below](#the-admin-password-prompt).
 
 That's it. No background daemons, no kernel extensions — just a [SwiftBar](https://github.com/swiftbar/SwiftBar) plugin that reads and flips that flag.
 
@@ -66,7 +68,32 @@ The 🤖 / 😴 icon appears in your menu bar within ~10 seconds.
 
 Click again → **Switch to sleep-on-lid-close** (😴) when you're done.
 
-> **Note:** toggling changes a system power setting, so macOS asks for your admin password each time. That's expected and safe — the plugin only ever runs `pmset -a disablesleep`.
+### The admin password prompt
+
+Every toggle changes a system power setting, so macOS will ask for your admin password. You'll see a dialog like this:
+
+> **Allow administrator access for a script started by "bash"?**
+>
+> This will allow the script to access and modify your data, files, and settings on this Mac.
+> **Apple could not verify this script is free of malware** that may harm your Mac or compromise your privacy.
+>
+> Enter your password to continue with the script.
+
+**This is expected.** The malware line reads alarmingly, but it isn't a detection — macOS shows that exact wording for *any* unsigned shell script asking for admin rights. It means "this script isn't notarized by Apple", not "Apple found something wrong with it". SwiftBar plugins are plain `.sh` files, so they're never notarized.
+
+What you're actually approving is one command:
+
+```bash
+osascript -e 'do shell script "pmset -a disablesleep 1" with administrator privileges'
+```
+
+That's the only thing the plugin ever runs with elevated rights. You can read the whole script yourself — it's 51 lines at `~/.swiftbar/ccbg.10s.sh`, and it's worth doing before you type your password into anything.
+
+A few things to expect:
+
+- **It asks every time you toggle.** Each click is a fresh invocation, so there's no "remember this" — that's by design, not a bug.
+- **"Don't Allow" is safe.** The setting stays as it was and the icon keeps showing the true state.
+- **It says "bash", not the plugin name.** SwiftBar runs the script through `bash`, so that's the process macOS names.
 
 ---
 
