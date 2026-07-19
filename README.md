@@ -61,7 +61,7 @@ The 🤖 / 😴 icon appears in your menu bar within ~10 seconds.
 
 1. Start Claude Code as usual.
 2. Click the menu-bar icon → **Keep running with lid closed** (🤖).
-3. Close the lid — **keep the Mac plugged in.**
+3. Close the lid — ideally with the Mac plugged in (optional, see below).
 4. Monitor / remote-control from the Claude app on your phone.
 
 Click again → **Switch to sleep-on-lid-close** (😴) when you're done.
@@ -72,7 +72,7 @@ Click again → **Switch to sleep-on-lid-close** (😴) when you're done.
 
 ## Cautions
 
-- **Keep it plugged in.** A closed laptop doing real work drains fast and has no airflow — heat builds up.
+- **Power is optional, but recommended.** It works fine on battery — being unplugged won't stop it. The catch is that a closed laptop doing real work drains fast, and once the battery runs out everything stops. Plugging in just means your work isn't cut short. Also watch heat: a closed lid has no airflow.
 - **Reboots can reset it.** macOS sometimes clears `disablesleep` on restart; the icon reflects the real state, so just click once to re-arm.
 - Don't bury the closed laptop under things while it's working.
 
