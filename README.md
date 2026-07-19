@@ -100,14 +100,17 @@ A few things to expect:
 There's no way to make macOS "approve the script once" — the dialog isn't a trust decision it remembers, and unsigned shell scripts can't be notarized. But you can grant permission for the *specific commands* ahead of time, with a sudoers rule:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/programmerdatch/claude-code-background/main/enable-passwordless.sh | bash
+curl -fsSL https://raw.githubusercontent.com/programmerdatch/claude-code-background/main/enable-passwordless.sh -o enable-passwordless.sh
+bash enable-passwordless.sh
 ```
 
-It asks for your password once (to write the rule), then toggling is silent from then on. Undo whenever you like:
+Download it rather than piping into `bash` — sudo needs a terminal to prompt on, and a pipe doesn't leave one attached. Keeping the file also means you can undo later:
 
 ```bash
-./enable-passwordless.sh --remove
+bash enable-passwordless.sh --remove
 ```
+
+It asks for your password once (to write the rule), then toggling is silent from then on.
 
 The rule is scoped as tightly as sudo allows — sudo matches arguments exactly, so it permits these two exact invocations and nothing else:
 
